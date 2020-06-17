@@ -1,17 +1,8 @@
 var express = require('express');
 var path = require('path');
 var app = express();
-var mysql = require('mysql');
+var apiRouter = require('./routes/api_router');
 
-sql_config = {
-    host: 'localhost' ,
-    user: 'root',
-    password: '1234',
-    database: 'o2'
-}
-
-var db = mysql.createConnection(sql_config);
-db.connect();
 
 app.set('views', path.resolve(__dirname + '/views'));
 app.set('view engine' , 'ejs')
@@ -20,6 +11,7 @@ app.set('view engine' , 'ejs')
 app.use(express.urlencoded({extended:false}));
 app.use(express.json());
 
+app.use('/', apiRouter);
 app.get('/hello' , (request, response)=> {
     // console.log(request);
     response.render('hello.ejs');
@@ -44,6 +36,7 @@ app.get('/data', (req, res)=>{
         }
     })
 })
+
 var port = 8000;
 
 app.listen(port, ()=> {
